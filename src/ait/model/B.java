@@ -10,8 +10,6 @@ import java.util.TreeSet;
 
 public class B implements EntityCollection {
     //    TODO +High,+Low (Средняя частота добавления и удаления.)
-
-    //    =====
     private TreeSet<Entity> entities;
 
     Comparator<Entity> comparatorByValue = (e1, e2) -> Integer.compare(e1.getValue(), e2.getValue());
@@ -42,8 +40,8 @@ public class B implements EntityCollection {
     //O(log n)
     @Override
     public Entity removeMaxValue() {
-        Entity res = entities.last();
-        entities.remove(entities.last());
-        return res;
+        if (entities.isEmpty()) return null;
+        Entity maxEntity = entities.pollLast();
+        return maxEntity;
     }
 }

@@ -3,16 +3,16 @@ package ait.model;
 import ait.dao.Entity;
 import ait.dao.EntityCollection;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class A implements EntityCollection {
     //    TODO +High,-Low (Частое добавление, редкое удаление.)
-    private ArrayList<Entity> entities;
+    private TreeSet<Entity> entities;
+    Comparator<Entity> comparatorByValue = (e1, e2) -> Integer.compare(e1.getValue(), e2.getValue());
 
     //------------------------------------------------------
     public A() {
-        entities = new ArrayList<>();
+        entities = new TreeSet<>(comparatorByValue);
     }
 
     public A(Entity entity) {
@@ -20,37 +20,23 @@ public class A implements EntityCollection {
         entities.add(entity);
     }
 
-    public A(List<Entity> entities) {
+    public A(Entity[] entities) {
         this();
         this.entities.forEach(entity -> add(entity));
     }
 //------------------------------------------------------
-// O(n)
+
+    //O(n)
     @Override
     public void add(Entity entity) {
-        for (Entity e : entities) {
-            if (e.getValue() == entity.getValue()) {
-                return;
-            }
-        }
+        if (entity == null) return;
         entities.add(entity);
     }
-// O(n)
+
     @Override
     public Entity removeMaxValue() {
-        int max = 0;
-        int index = -1;
-        for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).getValue() > max) {
-                max = entities.get(i).getValue();
-                index = i;
-            }
-        }
-        if (index < 0) {
-            return null;
-        }
-        Entity res = entities.get(index);
-        entities.remove(res);
-        return res;
+        if (entities.isEmpty()) return null;
+        Entity maxEntity = entities.pollLast();
+        return maxEntity;
     }
 }

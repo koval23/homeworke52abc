@@ -7,14 +7,12 @@ import java.util.*;
 
 public class C implements EntityCollection {
     //    TODO -High,+Low (Редкое добавление, частое удаление.)
-    private LinkedList<Entity> entities;
-
+    private TreeSet<Entity> entities;
     Comparator<Entity> comparatorByValue = (e1, e2) -> Integer.compare(e1.getValue(), e2.getValue());
-
 
     //------------------------------------------------------
     public C() {
-        entities = new LinkedList<>();
+        entities = new TreeSet<>(comparatorByValue);
     }
 
     public C(Entity entity) {
@@ -32,22 +30,13 @@ public class C implements EntityCollection {
     @Override
     public void add(Entity entity) {
         if (entity == null) return;
-        for (Entity e : entities) {
-            if (e.getValue() == entity.getValue()) {
-                return;
-            }
-        }
-        int index = Collections.binarySearch(entities, entity, comparatorByValue);
-        if (index >= 0) {
-            return;
-        }
-        index = -index - 1;
-        entities.add(index, entity);
+        entities.add(entity);
     }
 
-    // O(1)
     @Override
     public Entity removeMaxValue() {
-        return entities.removeLast();
+        if (entities.isEmpty()) return null;
+        Entity maxEntity = entities.pollLast();
+        return maxEntity;
     }
 }
