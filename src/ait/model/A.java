@@ -25,9 +25,14 @@ public class A implements EntityCollection {
         this.entities.forEach(entity -> add(entity));
     }
 //------------------------------------------------------
-// O(1)
+// O(n)
     @Override
     public void add(Entity entity) {
+        for (Entity e : entities) {
+            if (e.getValue() == entity.getValue()) {
+                return;
+            }
+        }
         entities.add(entity);
     }
 // O(n)

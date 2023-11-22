@@ -32,6 +32,11 @@ public class C implements EntityCollection {
     @Override
     public void add(Entity entity) {
         if (entity == null) return;
+        for (Entity e : entities) {
+            if (e.getValue() == entity.getValue()) {
+                return;
+            }
+        }
         int index = Collections.binarySearch(entities, entity, comparatorByValue);
         if (index >= 0) {
             return;
